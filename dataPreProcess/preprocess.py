@@ -1,44 +1,51 @@
+import pandas as pd
+
+
+def assign_label(value, mean, sd, feature):
+    if value < mean - sd:
+        return f'{feature}_L'
+    elif value > mean + sd:
+        return f'{feature}_H'
+    else:
+        return f'{feature}_M'
+
+
 class IrisPreprocess:
 
     def __init__(self, data):
         self.data = data
 
-    def minMax4EachColumn(self):
-        min_max = list()
-        for i in range(len(self.data[0])):
-            col_values = [row[i] for row in self.data]
-            value_min = min(col_values)
-            value_max = max(col_values)
-            min_max.append([value_min, value_max])
-        return min_max
+    def transformation(self):
+        """
+        Normalize the data
+        Summary Statistics:
+                           Min  Max   Mean    SD   Class Correlation
+              sepal length: 4.3  7.9   5.84  0.83    0.7826
+                sepal width: 2.0  4.4   3.05  0.43   -0.4194
+                petal length: 1.0  6.9   3.76  1.76    0.9490  (high!)
+                petal width: 0.1  2.5   1.20  0.76    0.9565  (high!)
+        Idea : Spilt the data into 3 groups by middle group is Mean +- SD
+        and the rest is less than Mean - SD and more than Mean + SD
+        """
 
-    def normalize(self):
-        # tuple 0 is sepal_length, tuple 1 is sepal_width, tuple 2 is petal_length, tuple 3 is petal_width
-        # tuple 0 : A [4.3,6.1] B [6.1,7.9]
-        # tuple 1 : C [2.0,3.2] D [3.2,4.4]
-        # tuple 2 : E [1.0,3.95] F [3.95,6.9]
-        # tuple 3 : G [0.1,1.3] H [1.3,2.5]
+        summary_statistics = {
+            'sepal_length': {'min': 4.3, 'max': 7.9, 'mean': 5.84, 'sd': 0.83},
+            'sepal_width': {'min': 2.0, 'max': 4.4, 'mean': 3.05, 'sd': 0.43},
+            'petal_length': {'min': 1.0, 'max': 6.9, 'mean': 3.76, 'sd': 1.76},
+            'petal_width': {'min': 0.1, 'max': 2.5, 'mean': 1.20, 'sd': 0.76}
+        }
 
-        for row in self.data:
-            for i in range(len(row) - 1):
-                if i == 0:
-                    if 4.3 <= row[i] <= 6.1:
-                        row[i] = 'A'
-                    elif 6.1 <= row[i] <= 7.9:
-                        row[i] = 'B'
-                elif i == 1:
-                    if 2.0 <= row[i] <= 3.2:
-                        row[i] = 'C'
-                    elif 3.2 <= row[i] <= 4.4:
-                        row[i] = 'D'
-                elif i == 2:
-                    if 1.0 <= row[i] <= 3.95:
-                        row[i] = 'E'
-                    elif 3.95 <= row[i] <= 6.9:
-                        row[i] = 'F'
-                elif i == 3:
-                    if 0.1 <= row[i] <= 1.3:
-                        row[i] = 'G'
-                    elif 1.3 <= row[i] <= 2.5:
-                        row[i] = 'H'
+        for i, feature in enumerate(['sepal_length', 'sepal_width', 'petal_length', 'petal_width']):
+            mean = summary_statistics[feature]['mean']
+            sd = summary_statistics[feature]['sd']
+
+            for row in self.data:
+                row[i] = assign_label(row[i], mean, sd, feature)
+
+        # export csv
+        with open('data.csv', 'w', newline='') as file:
+            pd.DataFrame(self.data).to_csv(file, index=False,
+                                           header=['sepal_length', 'sepal_width', 'petal_length', 'petal_width',
+                                                   'class'])
+
         return self.data

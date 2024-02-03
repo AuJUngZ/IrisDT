@@ -1,13 +1,12 @@
 import math
 
-
-def entropy(x, y, z):
-    sum_row = x + y + z
-    if x == 0 or y == 0 or z == 0:
+def entropy2(n):
+    sum_row = sum(n)
+    #     if member of n is 0
+    if 0 in n:
         return 0
     else:
-        return (-x / sum_row) * math.log2(x / sum_row) - (y / sum_row) * math.log2(y / sum_row) - (
-                z / sum_row) * math.log2(z / sum_row)
+        return sum([(-x / sum_row) * math.log2(x / sum_row) for x in n])
 
 
 def inforD(m, n):
