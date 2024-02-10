@@ -113,3 +113,8 @@ def secondIterated(data):
     print("Gain (sepal_length) is %5.3f" % (InD - Info_sepalLength))
     print("Gain (sepal_width) is %5.3f" % (InD - Info_sepalWidth))
     print("Gain (petal_width) is %5.3f" % (InD - Info_petalWidth))
+
+    print("\n*** CI table***")
+    print("sepal_length_ci", sepal_length_ci)
+    print("sepal_width_ci", sepal_width_ci)
+    print("petal_width_ci", petal_width_ci)

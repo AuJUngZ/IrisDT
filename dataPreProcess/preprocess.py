@@ -15,7 +15,7 @@ class IrisPreprocess:
     def __init__(self, data):
         self.data = data
 
-    def transformation(self):
+    def transformation(self, save_file=False):
         """
         Normalize the data
         Summary Statistics:
@@ -42,10 +42,11 @@ class IrisPreprocess:
             for row in self.data:
                 row[i] = assign_label(row[i], mean, sd, feature)
 
-        # export csv
-        with open('data.csv', 'w', newline='') as file:
-            pd.DataFrame(self.data).to_csv(file, index=False,
-                                           header=['sepal_length', 'sepal_width', 'petal_length', 'petal_width',
-                                                   'class'])
+        if save_file:
+            # export csv
+            with open('data.csv', 'w', newline='') as file:
+                pd.DataFrame(self.data).to_csv(file, index=False,
+                                               header=['sepal_length', 'sepal_width', 'petal_length', 'petal_width',
+                                                       'class'])
 
         return self.data

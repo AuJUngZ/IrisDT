@@ -1,4 +1,5 @@
-import unittest
+import pandas as pd
+from dataPreProcess.preprocess import IrisPreprocess
 
 
 def IrisDTreeModel(sepal_length, sepal_width, petal_length, petal_width):
@@ -26,30 +27,25 @@ def IrisDTreeModel(sepal_length, sepal_width, petal_length, petal_width):
 
 
 def TestDTreeModel():
-    test_data = [
-        ['sepal_length_M', 'sepal_width_H', 'petal_length_L', 'petal_width_L', 'Iris-setosa'],
-        ['sepal_length_L', 'sepal_width_H', 'petal_length_L', 'petal_width_L', 'Iris-setosa'],
-        ['sepal_length_H', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_H', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_L', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_L', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-versicolor'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_H', 'petal_width_H', 'Iris-virginica'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-virginica'],
-        ['sepal_length_H', 'sepal_width_M', 'petal_length_H', 'petal_width_H', 'Iris-virginica'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_H', 'petal_width_M', 'Iris'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_H', 'Iris-virginica'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_H', 'Iris-virginica'],
-        ['sepal_length_M', 'sepal_width_M', 'petal_length_M', 'petal_width_M', 'Iris-virginica']
-    ]
+    training_data = IrisPreprocess(pd.read_csv('dataset/iris.csv').values.tolist()).transformation()
     count = 0
     correct = 0
-    for row in test_data:
+    for row in training_data:
         count += 1
         if row[4] == IrisDTreeModel(row[0], row[1], row[2], row[3]):
             correct += 1
+    print('Test with training data:' + '\n' + '-' * 50)
+    print('Correct:', correct, 'Total:', count)
+    print('Accuracy:', correct / count)
+
+    unseen_data = IrisPreprocess(pd.read_csv('testDataset.csv').values.tolist()).transformation()
+    count = 0
+    correct = 0
+    for row in unseen_data:
+        count += 1
+        if row[4] == IrisDTreeModel(row[0], row[1], row[2], row[3]):
+            correct += 1
+    print('\nTest with unseen data:' + '\n' + '-' * 50)
     print('Correct:', correct, 'Total:', count)
     print('Accuracy:', correct / count)
 

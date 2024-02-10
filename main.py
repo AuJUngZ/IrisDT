@@ -7,7 +7,7 @@ from irisData.getData import Iris
 
 iris_instance = Iris()
 preprocess_instance = IrisPreprocess(iris_instance.completeData)
-data_firstRound = preprocess_instance.transformation()
+data_firstRound = preprocess_instance.transformation(save_file=True)
 #     รอบแรก
 #     self.columnNames = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
 Iterate.firstRound.firstIterated(data_firstRound)  # result show that petal_length is root node

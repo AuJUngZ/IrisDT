@@ -8,7 +8,7 @@ class Iris:
         self.label = []
         self.completeData = []
         self.columnNames = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width', 'class']
-        self.readData()
+        self.readDataWithFile()
 
     def readData(self):
         iris = fetch_ucirepo(id=53)
@@ -16,3 +16,6 @@ class Iris:
         self.label = iris.data.targets
         combined = pd.concat([self.data, self.label], axis=1)
         self.completeData = combined.values.tolist()
+
+    def readDataWithFile(self):
+        self.completeData = pd.read_csv('dataset/iris_backup.csv').values.tolist()

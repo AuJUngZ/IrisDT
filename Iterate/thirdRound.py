@@ -83,6 +83,9 @@ def thirdIterated(data):
     Info_sepalWidth = inforD(sepal_width, [sepal_width_ci[0][2], sepal_width_ci[1][2], sepal_width_ci[2][2]])
 
     print("\n***Gain results of all dataset 3st round***")
-    # print("Gain (age) is %5.3f"% gainAge)
     print("Gain (sepal_length) is %5.3f" % (InD - Info_sepalLength))
     print("Gain (sepal_width) is %5.3f" % (InD - Info_sepalWidth))
+
+    print("\n*** CI table***")
+    print("sepal_length_ci", sepal_length_ci)
+    print("sepal_width_ci", sepal_width_ci)
